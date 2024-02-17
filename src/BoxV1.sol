@@ -1,17 +1,17 @@
 // SPDX-License-Identifier : MIT
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 
 import {UUPSUpgradeable} from "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Initializable} from "lib/openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "lib/openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 
-contract BoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract BoxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     //
     uint256 internal number;
 
     function initialize() public initializer {
-        __Ownable_init(); // sets owner to msg.sender
+        __Ownable_init(msg.sender); // sets owner to msg.sender
         __UUPSUpgradeable_init();
     }
 
@@ -23,6 +23,6 @@ contract BoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return 1;
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
     //
 }
